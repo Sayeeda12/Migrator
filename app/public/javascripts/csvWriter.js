@@ -7,11 +7,13 @@ const e = require('express');
 var conn;
 
 module.exports = {
-    writeIntoCsv: async function(offset){
+    writeIntoCsv: async function(offset, siteId, from ,to){
         if(conn == undefined)
             conn = await connection.getConnection();
         var result = [];
-        let query = "SELECT  \"pageUrl\", \"pageTitle\", \"customEventValue\", \"eventType\", \"createdDate\", \"ipAdr\", \"visitCount\", \"custom1\", \"custom2\", \"siteId\", \"subSiteId\", \"custom10\", \"visitorUUID\", \"custom15\" FROM \"com.sap.swa::WEBEVENT_VIEW\" where \"siteId\" = '2bcdec4d-0cbd-440f-9602-6bdee004700f' and \"created\" >= '2021-03-01 00:00:01' and \"created\" <= '2021-03-01 23:59:59' limit 3000 offset " + offset;
+        let query = "SELECT  \"pageUrl\", \"pageTitle\", \"customEventValue\", \"eventType\", \"createdDate\", \"ipAdr\", \"visitCount\", \"custom1\","
+            query += " \"custom2\", \"siteId\", \"subSiteId\", \"custom10\", \"visitorUUID\", \"custom15\" FROM \"com.sap.swa::WEBEVENT_VIEW\""
+            qeury += " where \"siteId\" = '" + siteId + "' and \"created\" >= '" + from +" 00:00:01' and \"created\" <= '" + to +" 23:59:59' limit 3000 offset " + offset;
 
         console.log("beginning: "+offset);
         return new Promise((resolve, reject) => {
@@ -38,11 +40,11 @@ module.exports = {
         }); 
     },
 
-    readDataAndWriteIntoCSV : async function(off){
+    readDataAndWriteIntoCSV : async function(off, siteId, from ,to){
         var offset = parseInt(off);        
-        while(offset < 1000000){
+        while(offset < 6300000){
             console.log("good to go!");
-            let result = await this.writeIntoCsv(offset);
+            let result = await this.writeIntoCsv(offset, siteId, from, to);
             if(result)
                 offset += 3000;
             else

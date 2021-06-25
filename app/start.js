@@ -9,8 +9,8 @@ const csvWriter = require('./public/javascripts/csvWriter');
 const port = process.env.PORT || 3000;
 
 app.get("/fetchData/:offset", async (req, resp) => {
-    let res = await csvWriter.readDataAndWriteIntoCSV(req.params.offset);
-    resp.download(path.resolve(__dirname, './public/data/data.csv'));
+    let res = await csvWriter.readDataAndWriteIntoCSV(req.params.offset, req.query.siteId, req.query.from, req.query.to);
+    resp.download(path.resolve(__dirname, './public/data/data.csv')).send("Download complete");
 });
 
 const server = app.listen(port, () => {
