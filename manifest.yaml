@@ -4,7 +4,7 @@ applications:
 - name: recommenderTool
   host: recommenderTool
   path: app
-  memory: 1000M
+  memory: 8000M
   env:
     "NPM_CONFIG_@SAP:REGISTRY": "https://npm.sap.com"
     INCOMING_CONNECTION_TIMEOUT : 300000
